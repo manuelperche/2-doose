@@ -27,9 +27,11 @@ const Landing: React.FC = () => {
           </Link>
         </div>
         <div className="col-12 col-md-6 mt-5">
-          <button type="button" className="btn btn-info btn-lg btn-block">
-            <FontAwesomeIcon icon={faUser} /> <span> Login </span>
-          </button>
+          <Link to="/login">
+            <button type="button" className="btn btn-info btn-lg btn-block">
+              <FontAwesomeIcon icon={faUser} /> <span> Login </span>
+            </button>
+          </Link>
         </div>
       </div>
     </div>
