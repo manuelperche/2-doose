@@ -5,9 +5,15 @@ import {
   faUser,
   faHeart,
 } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const Landing: React.FC = () => {
+  const history = useHistory();
+
+  const navigate = (link: string): void => {
+    history.push(link);
+  };
+
   return (
     <div className="container mt-5 px-5">
       <div className="row">
@@ -20,18 +26,22 @@ const Landing: React.FC = () => {
           </p>
         </div>
         <div className="col-12 col-md-6 mt-5">
-          <Link to="/register">
-            <button type="button" className="btn btn-info btn-lg btn-block">
-              <FontAwesomeIcon icon={faAddressBook} /> <span> Register </span>
-            </button>
-          </Link>
+          <button
+            type="button"
+            onClick={() => navigate('/register')}
+            className="btn btn-info btn-lg btn-block"
+          >
+            <FontAwesomeIcon icon={faAddressBook} /> <span> Register </span>
+          </button>
         </div>
         <div className="col-12 col-md-6 mt-5">
-          <Link to="/login">
-            <button type="button" className="btn btn-info btn-lg btn-block">
-              <FontAwesomeIcon icon={faUser} /> <span> Login </span>
-            </button>
-          </Link>
+          <button
+            type="button"
+            onClick={() => navigate('/login')}
+            className="btn btn-info btn-lg btn-block"
+          >
+            <FontAwesomeIcon icon={faUser} /> <span> Login </span>
+          </button>
         </div>
       </div>
     </div>
