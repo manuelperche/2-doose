@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-
+import "firebase/auth"
 import "firebase/firestore";
 
 const config = {
@@ -15,3 +15,4 @@ const config = {
 const fb = firebase.initializeApp(config);
 
 export const db = fb.firestore();
+export const auth = fb.auth();
