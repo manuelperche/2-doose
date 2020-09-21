@@ -5,6 +5,7 @@ import InputField from '../ui/InputField';
 import { AuthContext } from './AuthProvider';
 import { auth } from '../../utils/firebase';
 import * as Yup from 'yup';
+import Loader from 'react-loader-spinner';
 
 interface RegisterForm {
   email: string;
@@ -32,18 +33,17 @@ const Register: React.FC = () => {
     password2: '',
   };
 
-  const handleSubmit = async (data: RegisterForm) => {
-    console.log(data);
-    // try {
-    //   const createdUser: firebase.auth.UserCredential = await auth.createUserWithEmailAndPassword(
-    //     data.email,
-    //     data.password
-    //   );
-    //   authContext.setUser(createdUser);
-    //   history.push('/dashboard');
-    // } catch (error) {
-    //   console.error(error);
-    // }
+  const handleSubmit = async (data: RegisterForm, { setStatus }: any) => {
+    try {
+      const user = await auth.signInWithEmailAndPassword(
+        data.email,
+        data.password
+      );
+      authContext.setUser(user);
+      history.push('/dashboard');
+    } catch (err) {
+      setStatus({ error: err.message });
+    }
   };
 
   return (
@@ -58,7 +58,7 @@ const Register: React.FC = () => {
             validateOnChange={false}
             validateOnBlur={false}
           >
-            {({ values, handleChange, handleBlur, handleSubmit, errors }) => (
+            {({ values, handleChange, handleBlur, handleSubmit, errors, status, isSubmitting }) => (
               <Form>
                 <Field
                   name="email"
@@ -89,8 +89,13 @@ const Register: React.FC = () => {
                   type="submit"
                   className="btn btn-info btn-lg btn-block mt-4"
                 >
-                  Register
+                  {isSubmitting ? <Loader type="Oval" color="#00BFFF" height={20} width={20}/> : 'Register'}
                 </button>
+                {status && status.error ? (
+                  <small className="form-text text-center mt-3 text-danger">
+                    {status.error}
+                  </small>
+                ) : null}
               </Form>
             )}
           </Formik>

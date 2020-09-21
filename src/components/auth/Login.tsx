@@ -1,7 +1,10 @@
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import InputField from '../ui/InputField';
+import { AuthContext } from './AuthProvider';
+import { auth } from '../../utils/firebase';
+import Loader from 'react-loader-spinner';
 import * as Yup from 'yup';
 
 interface LoginForm {
@@ -17,13 +20,24 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login: React.FC = () => {
+  const authContext = useContext(AuthContext);
+  const history = useHistory();
   const initialValues = {
     email: '',
     password: '',
   };
 
-  const handleSubmit = async (data: LoginForm) => {
-    console.log(data);
+  const handleSubmit = async (data: LoginForm, { setStatus }: any) => {
+    try {
+      const user = await auth.signInWithEmailAndPassword(
+        data.email,
+        data.password
+      );
+      authContext.setUser(user);
+      history.push('/dashboard');
+    } catch (err) {
+      setStatus({ error: err.message });
+    }
   };
 
   return (
@@ -38,7 +52,11 @@ const Login: React.FC = () => {
             validateOnChange={false}
             validateOnBlur={false}
           >
-            {({ values, handleChange, handleBlur, handleSubmit, errors }) => (
+            {({
+              errors,
+              status,
+              isSubmitting,
+            }) => (
               <Form>
                 <Field
                   name="email"
@@ -60,8 +78,13 @@ const Login: React.FC = () => {
                   type="submit"
                   className="btn btn-info btn-lg btn-block mt-4"
                 >
-                  Log in
+                  {isSubmitting ? <Loader type="Oval" color="#00BFFF" height={20} width={20}/> : 'Log in'}
                 </button>
+                {status && status.error ? (
+                  <small className="form-text text-center mt-3 text-danger">
+                    {status.error}
+                  </small>
+                ) : null}
               </Form>
             )}
           </Formik>
