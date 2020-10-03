@@ -35,7 +35,7 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (data: RegisterForm, { setStatus }: any) => {
     try {
-      const user = await auth.signInWithEmailAndPassword(
+      const user = await auth.createUserWithEmailAndPassword(
         data.email,
         data.password
       );
