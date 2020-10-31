@@ -8,7 +8,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../auth/AuthProvider';
-import Loading from './Loading';
 
 const Landing: React.FC = () => {
   const { authenticated , loadingAuthState } = useContext(AuthContext);
