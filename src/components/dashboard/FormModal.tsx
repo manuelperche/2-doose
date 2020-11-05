@@ -4,6 +4,7 @@ import Loader from 'react-loader-spinner';
 import InputField from '../ui/InputField';
 import * as Yup from 'yup';
 import { auth, db } from '../../utils/firebase';
+import firebase from 'firebase';
 
 const TodoSchema = Yup.object().shape({
   todo: Yup.string()
@@ -21,7 +22,7 @@ const FormModal = ({ close }: any) => {
     const todo = {
       color: data.color,
       todo: data.todo,
-      createdAt: new Date()
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     }
     try {
       await db.collection('users').doc(auth.currentUser?.uid).collection('todos').add(todo)
