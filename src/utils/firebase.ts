@@ -12,7 +12,7 @@ const config = {
   appId: process.env.REACT_APP_APPID
 };
 
-const fb = firebase.initializeApp(config);
+export const fb = firebase.initializeApp(config);
 
 export const db = fb.firestore();
 export const auth = fb.auth();
